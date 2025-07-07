@@ -19,6 +19,14 @@ export interface CeilingLouver {
   price: number
 }
 
+// Gutter type
+export interface GutterItem {
+  id: number
+  label: string
+  material: 'stainless' | 'aluminum' | 'vinyl' | 'pvc'
+  price: number
+}
+
 // Enum types
 export type MaterialType = 'translucent' | 'opaque'
 export type StructureSize = 'M' | 'M+' | 'L' | 'L+' | 'Stainless_S' | 'Stainless_M'
@@ -28,6 +36,7 @@ export interface CalculationResult {
   materialCost: number
   ceilingCost?: number
   louverCost?: number
+  gutterCost?: number
   totalCost: number
   area: number
   steps: string

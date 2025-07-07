@@ -15,9 +15,9 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
 }) => {
   if (!material) {
     return (
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h3 className="text-lg font-bold text-gray-800 mb-4">ราคาต่อตารางเมตร</h3>
-        <p className="text-gray-500">กรุณาเลือกวัสดุก่อน</p>
+      <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
+        <h3 className="text-lg font-semibold text-gray-800 mb-2">ราคาต่อตารางเมตร</h3>
+        <p className="text-sm text-gray-500">กรุณาเลือกวัสดุก่อน</p>
       </div>
     )
   }
@@ -26,36 +26,36 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Current Selected Price */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
-        <h3 className="text-lg font-medium opacity-90 mb-2">ราคาที่เลือก</h3>
-        <div className="text-3xl font-bold">
+      {/* Selected Price */}
+      <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 text-center">
+        <h3 className="text-sm font-medium text-gray-600 mb-1">ราคาต่อตารางเมตร</h3>
+        <div className="text-3xl font-bold text-gray-800">
           {currentPrice !== null ? `${formatPrice(currentPrice)} ฿` : 'ไม่มีราคา'}
         </div>
-        <div className="text-blue-100 text-sm mt-1">ต่อตารางเมตร • ขนาด {selectedSize}</div>
+        <p className="text-xs text-gray-500 mt-1">ขนาดโครงสร้าง: <span className="font-medium">{selectedSize}</span></p>
       </div>
 
       {/* Price Table */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h3 className="text-lg font-bold text-gray-800 mb-4">ราคาตามขนาดโครงสร้าง</h3>
+      <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">ราคาตามขนาดโครงสร้าง</h3>
         <div className="space-y-2">
           {STRUCTURE_SIZES.map(size => {
             const price = material.prices[size]
             const isSelected = size === selectedSize
-            
+
             return (
-              <div 
-                key={size} 
-                className={`flex justify-between items-center p-3 rounded-lg transition-colors ${
-                  isSelected 
-                    ? 'bg-blue-50 border-2 border-blue-200' 
-                    : 'bg-gray-50 hover:bg-gray-100'
+              <div
+                key={size}
+                className={`flex justify-between items-center p-3 rounded-lg border transition ${
+                  isSelected
+                    ? 'bg-indigo-50 border-indigo-200'
+                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
                 }`}
               >
-                <span className={`font-medium ${isSelected ? 'text-blue-700' : 'text-gray-700'}`}>
+                <span className={`text-sm font-medium ${isSelected ? 'text-indigo-700' : 'text-gray-700'}`}>
                   {size}
                 </span>
-                <span className={`font-bold ${isSelected ? 'text-blue-700' : 'text-gray-900'}`}>
+                <span className={`text-sm font-bold ${isSelected ? 'text-indigo-700' : 'text-gray-900'}`}>
                   {price !== null ? `${formatPrice(price)} ฿` : '—'}
                 </span>
               </div>

@@ -1,4 +1,5 @@
 import { CalculationResult, Material, CeilingLouver, StructureSize } from '@/types'
+import { GutterItem } from '@/data/gutters'
 
 interface CalculationParams {
   material: Material
@@ -7,14 +8,15 @@ interface CalculationParams {
   length: number
   ceiling?: CeilingLouver
   louver?: CeilingLouver
+  gutter?: GutterItem
 }
 
 export function calculateTotalPrice(params: CalculationParams): CalculationResult {
-  const { material, structureSize, width, length, ceiling, louver } = params
-  
+  const { material, structureSize, width, length, ceiling, louver, gutter } = params
+
   const area = width * length
   const materialPrice = material.prices[structureSize]
-  
+
   if (materialPrice === null) {
     throw new Error(`ไม่มีราคาสำหรับขนาด ${structureSize}`)
   }
@@ -25,6 +27,7 @@ export function calculateTotalPrice(params: CalculationParams): CalculationResul
 
   let ceilingCost: number | undefined
   let louverCost: number | undefined
+  let gutterCost: number | undefined
 
   // Calculate ceiling cost
   if (ceiling) {
@@ -40,12 +43,20 @@ export function calculateTotalPrice(params: CalculationParams): CalculationResul
     steps += `\n+ ระแนง: ${area.toFixed(2)} × ${louver.price.toLocaleString()} = ${louverCost.toLocaleString()} บาท`
   }
 
+  // Calculate gutter cost
+  if (gutter) {
+    gutterCost = length * gutter.price
+    totalCost += gutterCost
+    steps += `\n+ รางน้ำ: ${length.toFixed(2)} × ${gutter.price.toLocaleString()} = ${gutterCost.toLocaleString()} บาท`
+  }
+
   steps += `\n\nรวมทั้งหมด: ${totalCost.toLocaleString()} บาท`
 
   return {
     materialCost,
     ceilingCost,
     louverCost,
+    gutterCost,
     totalCost,
     area,
     steps

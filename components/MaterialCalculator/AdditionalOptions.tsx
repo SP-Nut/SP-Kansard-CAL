@@ -2,27 +2,36 @@ import React from 'react'
 import { Select } from '@/components/ui/Select'
 import { ceilings } from '@/data/ceilings'
 import { louvers } from '@/data/louvers'
+import { gutters } from '@/data/gutters'
 
 interface AdditionalOptionsProps {
   useCeiling: boolean
   useLouver: boolean
+  useGutter: boolean
   selectedCeilingId: number | null
   selectedLouverId: number | null
+  selectedGutterId: number | null
   onUseCeilingChange: (use: boolean) => void
   onUseLouverChange: (use: boolean) => void
+  onUseGutterChange: (use: boolean) => void
   onCeilingChange: (ceilingId: number | null) => void
   onLouverChange: (louverId: number | null) => void
+  onGutterChange: (gutterId: number | null) => void
 }
 
 export const AdditionalOptions: React.FC<AdditionalOptionsProps> = ({
   useCeiling,
   useLouver,
+  useGutter,
   selectedCeilingId,
   selectedLouverId,
+  selectedGutterId,
   onUseCeilingChange,
   onUseLouverChange,
+  onUseGutterChange,
   onCeilingChange,
-  onLouverChange
+  onLouverChange,
+  onGutterChange
 }) => {
   const ceilingOptions = ceilings.map(ceiling => ({
     value: ceiling.id,
@@ -34,31 +43,29 @@ export const AdditionalOptions: React.FC<AdditionalOptionsProps> = ({
     label: `${louver.name} (${louver.price.toLocaleString()} ฿/ตร.ม.)`
   }))
 
+  const gutterOptions = gutters.map(gutter => ({
+    value: gutter.id,
+    label: `${gutter.label} (${gutter.price.toLocaleString()} ฿/เมตร)`
+  }))
+
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-xl font-bold text-gray-800 mb-6">ตัวเลือกเพิ่มเติม</h2>
-      
+    <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
+      <h2 className="text-xl font-semibold text-gray-800 mb-6">ตัวเลือกเพิ่มเติม</h2>
+
       <div className="space-y-6">
-        {/* Ceiling Option */}
+        {/* ฝ้า */}
         <div>
-          <div className="flex items-center gap-3 mb-3">
-            <input 
-              type="checkbox" 
-              id="ceiling-checkbox"
-              className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 focus:ring-2"
-              checked={useCeiling} 
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={useCeiling}
               onChange={(e) => onUseCeilingChange(e.target.checked)}
+              className="w-5 h-5 text-indigo-600 rounded-md focus:ring-2"
             />
-            <label 
-              htmlFor="ceiling-checkbox" 
-              className="text-lg font-semibold text-gray-700 cursor-pointer"
-            >
-              เพิ่มงานฝ้า
-            </label>
-          </div>
-          
+            <span className="text-gray-700 font-medium">เพิ่มงานฝ้า</span>
+          </label>
           {useCeiling && (
-            <div className="ml-8">
+            <div className="mt-3 ml-7">
               <Select
                 options={ceilingOptions}
                 placeholder="-- เลือกประเภทฝ้า --"
@@ -69,26 +76,19 @@ export const AdditionalOptions: React.FC<AdditionalOptionsProps> = ({
           )}
         </div>
 
-        {/* Louver Option */}
+        {/* ระแนง */}
         <div>
-          <div className="flex items-center gap-3 mb-3">
-            <input 
-              type="checkbox" 
-              id="louver-checkbox"
-              className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 focus:ring-2"
-              checked={useLouver} 
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={useLouver}
               onChange={(e) => onUseLouverChange(e.target.checked)}
+              className="w-5 h-5 text-indigo-600 rounded-md focus:ring-2"
             />
-            <label 
-              htmlFor="louver-checkbox" 
-              className="text-lg font-semibold text-gray-700 cursor-pointer"
-            >
-              เพิ่มงานระแนง
-            </label>
-          </div>
-          
+            <span className="text-gray-700 font-medium">เพิ่มงานระแนง</span>
+          </label>
           {useLouver && (
-            <div className="ml-8">
+            <div className="mt-3 ml-7">
               <Select
                 options={louverOptions}
                 placeholder="-- เลือกประเภทระแนง --"
@@ -98,22 +98,30 @@ export const AdditionalOptions: React.FC<AdditionalOptionsProps> = ({
             </div>
           )}
         </div>
-      </div>
 
-      {/* Summary of selected options */}
-      {(useCeiling || useLouver) && (
-        <div className="mt-6 p-4 bg-orange-50 rounded-lg border border-orange-200">
-          <h4 className="font-semibold text-orange-800 mb-2">ตัวเลือกที่เลือก:</h4>
-          <ul className="space-y-1 text-sm text-orange-700">
-            {useCeiling && selectedCeilingId && (
-              <li>• ฝ้า: {ceilings.find(c => c.id === selectedCeilingId)?.name}</li>
-            )}
-            {useLouver && selectedLouverId && (
-              <li>• ระแนง: {louvers.find(l => l.id === selectedLouverId)?.name}</li>
-            )}
-          </ul>
+        {/* ✅ รางน้ำ */}
+        <div>
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={useGutter}
+              onChange={(e) => onUseGutterChange(e.target.checked)}
+              className="w-5 h-5 text-indigo-600 rounded-md focus:ring-2"
+            />
+            <span className="text-gray-700 font-medium">เพิ่มงานรางน้ำ</span>
+          </label>
+          {useGutter && (
+            <div className="mt-3 ml-7">
+              <Select
+                options={gutterOptions}
+                placeholder="-- เลือกรางน้ำ --"
+                value={selectedGutterId || ''}
+                onChange={(e) => onGutterChange(e.target.value ? Number(e.target.value) : null)}
+              />
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   )
 }

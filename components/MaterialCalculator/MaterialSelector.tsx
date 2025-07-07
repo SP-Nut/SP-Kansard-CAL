@@ -1,6 +1,6 @@
 import React from 'react'
 import { Select } from '@/components/ui/Select'
-import { MaterialType, Material, StructureSize } from '@/types'
+import { MaterialType, StructureSize } from '@/types'
 import { translucentMaterials, opaqueMaterials } from '@/data/materials'
 
 interface MaterialSelectorProps {
@@ -35,29 +35,29 @@ export const MaterialSelector: React.FC<MaterialSelectorProps> = ({
   }))
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-xl font-bold text-gray-800 mb-6">เลือกวัสดุ</h2>
-      
-      {/* Material Type Selection */}
+    <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
+      <h2 className="text-xl font-semibold text-gray-800 mb-6">เลือกวัสดุ</h2>
+
+      {/* Material Type Toggle */}
       <div className="mb-6">
-        <label className="block text-sm font-semibold text-gray-700 mb-3">ประเภทวัสดุ</label>
-        <div className="grid grid-cols-2 gap-4 max-w-md">
+        <label className="block text-sm font-medium text-gray-700 mb-2">ประเภทวัสดุ</label>
+        <div className="inline-flex items-center bg-gray-100 p-1 rounded-xl shadow-inner">
           <button
             onClick={() => onMaterialTypeChange('translucent')}
-            className={`py-3 px-4 rounded-lg font-medium transition-all ${
-              materialType === 'translucent' 
-                ? 'bg-blue-500 text-white shadow-md' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${
+              materialType === 'translucent'
+                ? 'bg-indigo-500 text-white shadow'
+                : 'text-gray-600 hover:bg-gray-200'
             }`}
           >
             วัสดุโปร่งแสง
           </button>
           <button
             onClick={() => onMaterialTypeChange('opaque')}
-            className={`py-3 px-4 rounded-lg font-medium transition-all ${
-              materialType === 'opaque' 
-                ? 'bg-blue-500 text-white shadow-md' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${
+              materialType === 'opaque'
+                ? 'bg-indigo-500 text-white shadow'
+                : 'text-gray-600 hover:bg-gray-200'
             }`}
           >
             วัสดุทึบแสง
@@ -65,7 +65,7 @@ export const MaterialSelector: React.FC<MaterialSelectorProps> = ({
         </div>
       </div>
 
-      {/* Material and Size Selection */}
+      {/* Material & Size Select */}
       <div className="grid md:grid-cols-2 gap-6">
         <Select
           label="เลือกวัสดุ"
