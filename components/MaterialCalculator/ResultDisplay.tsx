@@ -1,15 +1,15 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/Button'
-import { CalculationResult } from '@/types'
+import type { CalculationResult } from '@/types'
 import { formatPrice } from '@/utils/calculations'
-
 interface ResultDisplayProps {
-  result: CalculationResult | null
+  result: CalculationResult | null;
+  onDiscountChange?: (discount: number) => void;
 }
 
-export const ResultDisplay: React.FC<ResultDisplayProps> = ({ result }) => {
-  const [pdfText, setPdfText] = React.useState('');
-  React.useEffect(() => {
+export const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, onDiscountChange }) => {
+  const [pdfText, setPdfText] = useState('');
+  useEffect(() => {
     if (!result) return;
     let text = '';
     text += `ราคารวมทั้งหมด (โดยประมาณ): ${result.totalCost.toLocaleString()} ฿\n`;
@@ -30,144 +30,66 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ result }) => {
     setPdfText(text);
   }, [result]);
 
+
   if (!result) {
     return (
-      <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100 text-center">
-        <h3 className="text-2xl font-bold text-gray-800 mb-2">ผลการคำนวณ</h3>
+      <div className="bg-gray-50 rounded-xl shadow-sm p-8 border border-gray-200 text-center font-sans">
+        <h3 className="text-xl font-semibold text-gray-700 mb-2">ผลการคำนวณ</h3>
         <p className="text-base text-gray-500">กรุณากรอกข้อมูลให้ครบถ้วนแล้วกดคำนวณ</p>
       </div>
     )
   }
 
   return (
-    <div className="space-y-8">
-      {/* Total Price Display */}
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-8 text-center">
-        <h3 className="text-lg text-gray-600 font-medium mb-2">ราคารวมทั้งหมด (โดยประมาณ)</h3>
-        <div className="text-5xl font-extrabold text-indigo-700">
-          {formatPrice(result.totalCost)} ฿
-        </div>
-      </div>
-
-      {/* Breakdown */}
-      <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-100">
-        <h3 className="text-xl font-bold text-gray-800 mb-6">รายละเอียดค่าใช้จ่าย</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="flex justify-between items-center py-2 border-b border-gray-200 col-span-2">
-            <span className="text-gray-700 text-lg">ค่าวัสดุหลังคา</span>
-            <span className="font-semibold text-gray-900 text-lg">
-              {formatPrice(result.materialCost)} ฿
-            </span>
+    <section className="w-full min-h-[60vh] flex flex-col items-center justify-center px-2 sm:px-0 bg-gray-50 font-sans">
+      <div className="space-y-8 max-w-2xl mx-auto py-8">
+        {/* Summary Card */}
+        <div className="bg-white border border-gray-100 rounded-xl shadow-sm p-6 sm:p-8 text-center flex flex-col items-center gap-3 max-w-lg mx-auto transition-all">
+          <h3 className="text-lg text-gray-700 font-semibold mb-2 tracking-tight">สรุปราคาทั้งหมด</h3>
+          <div className="flex flex-col gap-2 w-full mt-2">
+            <div className="flex justify-between text-base text-gray-600 w-full">
+              <span>ราคารวม (ก่อนส่วนลด)</span>
+              <span className="font-semibold text-gray-800">{formatPrice(result.totalCost)} ฿</span>
+            </div>
+            <div className="flex justify-between text-base w-full">
+              <span>ส่วนลด</span>
+              <span className="font-semibold text-green-500">- {formatPrice(result.discount)} ฿</span>
+            </div>
+            <div className="flex justify-between text-base w-full">
+              <span>VAT ({result.vatRate}%)</span>
+              <span className="font-semibold text-yellow-500">+ {formatPrice(result.vatAmount)} ฿</span>
+            </div>
           </div>
-          {result.ceilingCost && (
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 col-span-2">
-              <span className="text-gray-700">ค่าฝ้า</span>
-              <span className="font-semibold text-gray-900">
-                {formatPrice(result.ceilingCost)} ฿
-              </span>
-            </div>
-          )}
-          {result.louverCost && (
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 col-span-2">
-              <span className="text-gray-700">ค่าระแนง</span>
-              <span className="font-semibold text-gray-900">
-                {formatPrice(result.louverCost)} ฿
-              </span>
-            </div>
-          )}
-          {result.gutterCost && (
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 col-span-2">
-              <span className="text-gray-700">ค่ารางน้ำ</span>
-              <span className="font-semibold text-gray-900">
-                {formatPrice(result.gutterCost)} ฿
-              </span>
-            </div>
-          )}
-          {result.electricityCost && (
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 col-span-2">
-              <span className="text-gray-700">ค่าไฟฟ้า</span>
-              <span className="font-semibold text-gray-900">
-                {formatPrice(result.electricityCost)} ฿
-              </span>
-            </div>
-          )}
-          {result.railingExtraCost && (
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 col-span-2">
-              <span className="text-gray-700">ค่างานราวกันตก</span>
-              <span className="font-semibold text-gray-900">
-                {formatPrice(result.railingExtraCost)} ฿
-              </span>
-            </div>
-          )}
-          {result.ventilatorCost && (
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 col-span-2">
-              <span className="text-gray-700">ค่างานระบายอากาศ</span>
-              <span className="font-semibold text-gray-900">
-                {formatPrice(result.ventilatorCost)} ฿
-              </span>
-            </div>
-          )}
-          {result.postCost && (
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 col-span-2">
-              <span className="text-gray-700">ค่าเสา</span>
-              <span className="font-semibold text-gray-900">
-                {formatPrice(result.postCost)} ฿
-              </span>
-            </div>
-          )}
-          {result.foundationCost && (
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 col-span-2">
-              <span className="text-gray-700">ค่าฐานราก</span>
-              <span className="font-semibold text-gray-900">
-                {formatPrice(result.foundationCost)} ฿
-              </span>
-            </div>
-          )}
-          {result.colorCost && (
-            <div className="flex justify-between items-center py-2 border-b border-gray-200 col-span-2">
-              <span className="text-gray-700">ค่าสี</span>
-              <span className="font-semibold text-gray-900">
-                {formatPrice(result.colorCost)} ฿
-              </span>
-            </div>
-          )}
+          <div className="border-t border-gray-100 w-full my-3"></div>
+          <div className="flex justify-between items-center w-full">
+            <span className="text-base font-semibold text-gray-700">ราคาสุทธิ</span>
+            <span className="text-xl font-bold text-blue-600">{formatPrice(result.grandTotal)} ฿</span>
+          </div>
+          <div className="flex justify-between items-center w-full mt-2">
+            <span className="text-base text-gray-500">พื้นที่ใช้งาน</span>
+            <span className="text-base font-semibold text-gray-700">{result.area.toFixed(2)} ตร.ม.</span>
+          </div>
+          <div className="w-full flex flex-col sm:flex-row gap-2 mt-6">
+            <Button
+              variant="ghost"
+              size="md"
+              className="w-full sm:w-auto border border-gray-200 rounded-lg shadow-sm text-gray-700 hover:bg-gray-100"
+              pdfContent={pdfText}
+              pdfTitle={`สรุปผลรวมและขั้นตอนการคำนวณ`}
+            >
+              ออกรายงาน PDF
+            </Button>
+          </div>
         </div>
-        <div className="flex justify-between items-center py-4 bg-gray-50 rounded-lg px-6 mt-4">
-          <span className="text-xl font-bold text-gray-800">รวมทั้งหมด</span>
-          <span className="text-2xl font-bold text-indigo-600">
-            {formatPrice(result.totalCost)} ฿
-          </span>
-        </div>
-      </div>
 
-      {/* Calculation Steps */}
-      <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-100">
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">ขั้นตอนการคำนวณ</h3>
-        <div className="bg-gray-50 rounded-lg p-4 overflow-x-auto">
-          <pre className="text-base text-gray-700 whitespace-pre-line font-mono">
+        {/* Calculation Steps */}
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100 max-w-lg mx-auto mt-6">
+          <h3 className="text-base font-semibold text-gray-700 mb-2">รายละเอียดและขั้นตอนการคำนวณ</h3>
+          <pre className="text-sm text-gray-700 whitespace-pre-line font-mono bg-gray-50 rounded-lg p-3 overflow-x-auto">
             {result.steps}
           </pre>
         </div>
       </div>
-
-      {/* Area Info */}
-      <div className="bg-gray-50 rounded-xl border border-gray-200 p-6 text-center mb-4">
-        <p className="text-base text-gray-500 font-medium">พื้นที่ใช้งาน</p>
-        <p className="text-2xl font-bold text-gray-800">
-          {result.area.toFixed(2)} ตารางเมตร
-        </p>
-      </div>
-      {/* PDF Button */}
-      <div className="flex justify-end">
-        <Button
-          variant="outline"
-          size="md"
-          pdfContent={pdfText}
-          pdfTitle={`สรุปผลรวมและขั้นตอนการคำนวณ`}
-        >
-          ออกรายงาน PDF
-        </Button>
-      </div>
-    </div>
+    </section>
   )
 }

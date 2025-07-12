@@ -23,6 +23,7 @@ import colorOptions from '@/data/colors'
 const STRUCTURE_SIZES: StructureSize[] = ['M', 'M+', 'L', 'L+', 'Stainless_S', 'Stainless_M']
 
 export const MaterialCalculator: React.FC = () => {
+  const [discount, setDiscount] = useState<number>(0);
   const [materialType, setMaterialType] = useState<MaterialType>('translucent')
   const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null)
   const [selectedSize, setSelectedSize] = useState<StructureSize>('M')
@@ -116,7 +117,7 @@ export const MaterialCalculator: React.FC = () => {
 
     try {
       const calculationResult = calculateTotalPrice({
-        material: selectedMaterial,
+        material: { ...selectedMaterial, discount },
         structureSize: selectedSize,
         width: w,
         length: l,
@@ -129,8 +130,8 @@ export const MaterialCalculator: React.FC = () => {
         post: selectedPost,
         foundation: selectedFoundation,
         color: selectedColor,
-      })
-      setResult(calculationResult)
+      });
+      setResult(calculationResult);
     } catch {
       // Silent error handling
     }
@@ -146,6 +147,18 @@ export const MaterialCalculator: React.FC = () => {
             <h1 className="text-2xl font-bold text-blue-900 mb-5 tracking-tight">
               สร้างใบเสนอราคา
             </h1>
+            {/* ส่วนลด */}
+            <div className="mb-4 flex items-center gap-2">
+              <label htmlFor="discount" className="font-medium text-gray-700">ส่วนลด (บาท):</label>
+              <input
+                id="discount"
+                type="number"
+                min={0}
+                className="border rounded px-2 py-1 w-28 text-right font-semibold text-green-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                value={discount}
+                onChange={e => setDiscount(Number(e.target.value))}
+              />
+            </div>
 
             {/* 1. เลือกวัสดุ */}
             <section className="mb-4">

@@ -66,6 +66,8 @@ export const translucentMaterials: Material[] = [
     name: 'หลังคาโพลีคาร์บอเนต Polycarbonate หนา 6 มม.',
     prices: { M: 1800, 'M+': 1900, L: 2000, 'L+': 2100, Stainless_S: 3300, Stainless_M: 4400 }
   }
+  
+  
 ]
 
 export const opaqueMaterials: Material[] = [

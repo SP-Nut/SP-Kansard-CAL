@@ -10,6 +10,8 @@ export interface Material {
     Stainless_S: number | null
     Stainless_M: number
   }
+  discount?: number // ส่วนลด (บาท)
+  vat?: number // ภาษีมูลค่าเพิ่ม (%)
 }
 
 // Ceiling and Louver types
@@ -86,6 +88,10 @@ export interface CalculationResult {
   foundationCost?: number
   colorCost?: number
   totalCost: number
+  discount: number
+  vatRate: number
+  vatAmount: number
+  grandTotal: number
   area: number
   steps: string
 }

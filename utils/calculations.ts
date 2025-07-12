@@ -104,7 +104,19 @@ export function calculateTotalPrice(params: CalculationParams): CalculationResul
     steps += `\n+ สี: ${color.name} = ${color.price.toLocaleString()} บาท`
   }
 
-  steps += `\n\nรวมทั้งหมด: ${totalCost.toLocaleString()} บาท`
+  steps += `\n\nรวมทั้งหมด: ${totalCost.toLocaleString()} บาท`;
+  // ส่วนลด (บาท)
+  const discount = material.discount ?? 0;
+  let netTotal = totalCost - discount;
+  if (netTotal < 0) netTotal = 0;
+  // VAT (%)
+  const vatRate = material.vat ?? 7;
+  const vatAmount = Math.round(netTotal * vatRate / 100);
+  const grandTotal = netTotal + vatAmount;
+
+  steps += `\n- ส่วนลด: ${discount.toLocaleString()} บาท`;
+  steps += `\n+ VAT (${vatRate}%): ${vatAmount.toLocaleString()} บาท`;
+  steps += `\n\nราคาสุทธิ: ${grandTotal.toLocaleString()} บาท`;
 
   return {
     materialCost,
@@ -118,6 +130,10 @@ export function calculateTotalPrice(params: CalculationParams): CalculationResul
     foundationCost,
     colorCost,
     totalCost,
+    discount,
+    vatRate,
+    vatAmount,
+    grandTotal,
     area,
     steps
   }
