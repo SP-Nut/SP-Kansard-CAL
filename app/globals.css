@@ -1,27 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --background: #fafafa;
+  --foreground: #222;
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+  --card: #fff;
+  --border: #e5e7eb;
+  --radius: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #18181b;
     --foreground: #ededed;
+    --card: #23232b;
+    --border: #23232b;
   }
 }
 
 /* Dark mode class overrides */
 .dark {
-  --background: #0a0a0a;
+  --background: #18181b;
   --foreground: #ededed;
   color-scheme: dark;
 }
@@ -29,48 +29,27 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Inter', 'Prompt', Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100vw;
 }
 
 /* Smooth transitions for all elements */
 * {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.5);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(156, 163, 175, 0.7);
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: rgba(75, 85, 99, 0.5);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: rgba(75, 85, 99, 0.7);
+  box-sizing: border-box;
 }
 
 /* Animation delays for floating elements */
 .animation-delay-2000 {
-  animation-delay: 2s;
+  animation-delay: 0s;
 }
 
 .animation-delay-4000 {
-  animation-delay: 4s;
+  animation-delay: 0s;
 }
 
 /* Ensure proper contrast in both modes */
@@ -87,4 +66,44 @@ body {
 .dark input[type="number"],
 .dark select {
   color-scheme: dark;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  border-radius: var(--radius);
+  border: 1px solid var(--border); /* กลับมาใช้ border ปกติสำหรับทุกปุ่ม/อินพุต */
+  background: #fff;
+  color: var(--foreground);
+}
+
+button {
+  font-family: inherit;
+  border-radius: var(--radius);
+  /* ไม่กำหนด background หรือ border ที่นี่ เพื่อให้ Tailwind class ของปุ่มทำงานเต็มที่ */
+}
+
+/* Force border color for Tailwind border-indigo-500 */
+input.border-indigo-500 {
+  border-color: #6366f1 !important;
+  border-width: 2px !important;
+}
+input:focus.border-indigo-500 {
+  border-color: #4f46e5 !important; /* indigo-600 */
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 8px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #23232b;
+}
+
+@media (max-width: 640px) {
+  html { font-size: 15px; }
+  body { padding: 0; }
 }

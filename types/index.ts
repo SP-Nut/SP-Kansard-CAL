@@ -19,6 +19,56 @@ export interface CeilingLouver {
   price: number
 }
 
+// Electricity type
+export interface ElectricityOption {
+  id: string
+  name: string
+  price: number
+}
+
+// Gutter type
+export interface GutterItem {
+  id: number
+  label: string
+  material: 'stainless' | 'aluminum' | 'vinyl' | 'pvc'
+  price: number
+}
+
+// Railing Extra type
+export interface RailingExtraOption {
+  id: string
+  name: string
+  price: number
+}
+
+// Ventilator type
+export interface VentilatorOption {
+  id: string
+  name: string
+  price: number
+}
+
+// Post type
+export interface PostOption {
+  id: string
+  name: string
+  price: number
+}
+
+// Foundation type
+export interface FoundationOption {
+  id: string
+  name: string
+  price: number
+}
+
+// Color type
+export interface ColorOption {
+  id: string
+  name: string
+  price: number
+}
+
 // Enum types
 export type MaterialType = 'translucent' | 'opaque'
 export type StructureSize = 'M' | 'M+' | 'L' | 'L+' | 'Stainless_S' | 'Stainless_M'
@@ -28,6 +78,13 @@ export interface CalculationResult {
   materialCost: number
   ceilingCost?: number
   louverCost?: number
+  gutterCost?: number
+  electricityCost?: number
+  railingExtraCost?: number
+  ventilatorCost?: number
+  postCost?: number
+  foundationCost?: number
+  colorCost?: number
   totalCost: number
   area: number
   steps: string

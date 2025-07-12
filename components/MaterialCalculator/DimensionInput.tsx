@@ -18,11 +18,11 @@ export const DimensionInput: React.FC<DimensionInputProps> = ({
   const area = width && length ? parseFloat(width) * parseFloat(length) : 0
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-xl font-bold text-gray-800 mb-6">ขนาดพื้นที่</h2>
-      
+    <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
+      <h2 className="text-xl font-semibold text-gray-800 mb-6">ขนาดพื้นที่</h2>
+
       <div className="grid md:grid-cols-3 gap-6">
-        {/* Width Input */}
+        {/* Width */}
         <Input
           label="ความกว้าง (เมตร)"
           type="number"
@@ -33,7 +33,7 @@ export const DimensionInput: React.FC<DimensionInputProps> = ({
           step="0.01"
         />
 
-        {/* Length Input */}
+        {/* Length */}
         <Input
           label="ความยาว (เมตร)"
           type="number"
@@ -44,28 +44,24 @@ export const DimensionInput: React.FC<DimensionInputProps> = ({
           step="0.01"
         />
 
-        {/* Area Display */}
+        {/* Area display */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             พื้นที่รวม (ตร.ม.)
           </label>
-          <div className="bg-purple-50 border-2 border-purple-200 rounded-lg px-3 py-2 h-10 flex items-center">
-            <span className="font-bold text-purple-800">
-              {area > 0 ? formatArea(area) : '0.00'}
-            </span>
+          <div className="h-10 flex items-center px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800 font-semibold">
+            {area > 0 ? formatArea(area) : '0.00'}
           </div>
         </div>
       </div>
 
-      {/* Area Highlight */}
+      {/* Highlight box */}
       {area > 0 && (
-        <div className="mt-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-200">
-          <div className="text-center">
-            <p className="text-sm text-purple-600 font-medium">พื้นที่ที่คำนวณ</p>
-            <p className="text-2xl font-bold text-purple-800">
-              {formatArea(area)} ตารางเมตร
-            </p>
-          </div>
+        <div className="mt-6 rounded-xl bg-gray-50 border border-gray-200 p-5 text-center">
+          <p className="text-sm text-gray-500 font-medium">พื้นที่ที่คำนวณได้</p>
+          <p className="text-2xl font-bold text-gray-800 mt-1">
+            {formatArea(area)} ตารางเมตร
+          </p>
         </div>
       )}
     </div>
