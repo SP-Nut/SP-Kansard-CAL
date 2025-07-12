@@ -1,4 +1,4 @@
-import { CalculationResult, Material, CeilingLouver, StructureSize } from '@/types'
+import { CalculationResult, Material, CeilingLouver, StructureSize, ElectricityOption, RailingExtraOption, VentilatorOption, PostOption, FoundationOption, ColorOption } from '@/types'
 import { GutterItem } from '@/data/gutters'
 
 interface CalculationParams {
@@ -9,10 +9,16 @@ interface CalculationParams {
   ceiling?: CeilingLouver
   louver?: CeilingLouver
   gutter?: GutterItem
+  electricity?: ElectricityOption
+  railingExtra?: RailingExtraOption
+  ventilator?: VentilatorOption
+  post?: PostOption
+  foundation?: FoundationOption
+  color?: ColorOption
 }
 
 export function calculateTotalPrice(params: CalculationParams): CalculationResult {
-  const { material, structureSize, width, length, ceiling, louver, gutter } = params
+  const { material, structureSize, width, length, ceiling, louver, gutter, electricity, railingExtra, ventilator, post, foundation, color } = params
 
   const area = width * length
   const materialPrice = material.prices[structureSize]
@@ -28,6 +34,12 @@ export function calculateTotalPrice(params: CalculationParams): CalculationResul
   let ceilingCost: number | undefined
   let louverCost: number | undefined
   let gutterCost: number | undefined
+  let electricityCost: number | undefined
+  let railingExtraCost: number | undefined
+  let ventilatorCost: number | undefined
+  let postCost: number | undefined
+  let foundationCost: number | undefined
+  let colorCost: number | undefined
 
   // Calculate ceiling cost
   if (ceiling) {
@@ -50,6 +62,48 @@ export function calculateTotalPrice(params: CalculationParams): CalculationResul
     steps += `\n+ รางน้ำ: ${length.toFixed(2)} × ${gutter.price.toLocaleString()} = ${gutterCost.toLocaleString()} บาท`
   }
 
+  // Calculate electricity cost
+  if (electricity) {
+    electricityCost = electricity.price
+    totalCost += electricityCost
+    steps += `\n+ งานไฟฟ้า: ${electricity.name} = ${electricity.price.toLocaleString()} บาท`
+  }
+
+  // Calculate railing extra cost
+  if (railingExtra) {
+    railingExtraCost = railingExtra.price
+    totalCost += railingExtraCost
+    steps += `\n+ งานราวกันตก: ${railingExtra.name} = ${railingExtra.price.toLocaleString()} บาท`
+  }
+
+  // Calculate ventilator cost
+  if (ventilator) {
+    ventilatorCost = ventilator.price
+    totalCost += ventilatorCost
+    steps += `\n+ งานระบายอากาศ: ${ventilator.name} = ${ventilator.price.toLocaleString()} บาท`
+  }
+
+  // Calculate post cost
+  if (post) {
+    postCost = post.price
+    totalCost += postCost
+    steps += `\n+ เสา: ${post.name} = ${post.price.toLocaleString()} บาท`
+  }
+
+  // Calculate foundation cost
+  if (foundation) {
+    foundationCost = foundation.price
+    totalCost += foundationCost
+    steps += `\n+ ฐานราก: ${foundation.name} = ${foundation.price.toLocaleString()} บาท`
+  }
+
+  // Calculate color cost
+  if (color) {
+    colorCost = color.price
+    totalCost += colorCost
+    steps += `\n+ สี: ${color.name} = ${color.price.toLocaleString()} บาท`
+  }
+
   steps += `\n\nรวมทั้งหมด: ${totalCost.toLocaleString()} บาท`
 
   return {
@@ -57,6 +111,12 @@ export function calculateTotalPrice(params: CalculationParams): CalculationResul
     ceilingCost,
     louverCost,
     gutterCost,
+    electricityCost,
+    railingExtraCost,
+    ventilatorCost,
+    postCost,
+    foundationCost,
+    colorCost,
     totalCost,
     area,
     steps

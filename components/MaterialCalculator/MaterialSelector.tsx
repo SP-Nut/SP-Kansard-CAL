@@ -41,23 +41,23 @@ export const MaterialSelector: React.FC<MaterialSelectorProps> = ({
       {/* Material Type Toggle */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">ประเภทวัสดุ</label>
-        <div className="inline-flex items-center bg-gray-100 p-1 rounded-xl shadow-inner">
+        <div className="inline-flex items-center bg-gray-100 p-1 rounded-xl shadow-inner border border-indigo-200">
           <button
             onClick={() => onMaterialTypeChange('translucent')}
-            className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-indigo-500 ${
               materialType === 'translucent'
-                ? 'bg-indigo-500 text-white shadow'
-                : 'text-gray-600 hover:bg-gray-200'
+                ? 'bg-white text-indigo-600 border-indigo-500 shadow'
+                : 'text-gray-600 hover:bg-gray-200 border-transparent'
             }`}
           >
             วัสดุโปร่งแสง
           </button>
           <button
             onClick={() => onMaterialTypeChange('opaque')}
-            className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all border-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-indigo-500 ${
               materialType === 'opaque'
-                ? 'bg-indigo-500 text-white shadow'
-                : 'text-gray-600 hover:bg-gray-200'
+                ? 'bg-white text-indigo-600 border-indigo-500 shadow'
+                : 'text-gray-600 hover:bg-gray-200 border-transparent'
             }`}
           >
             วัสดุทึบแสง
