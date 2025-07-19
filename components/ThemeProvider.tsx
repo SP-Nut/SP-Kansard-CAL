@@ -6,9 +6,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="light"
+      defaultTheme="system"
       enableSystem
       disableTransitionOnChange={false}
+      themes={['light', 'dark', 'system']}
+      storageKey="sp-kansard-theme"
     >
       {children}
     </ThemeProvider>
