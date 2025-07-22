@@ -18,9 +18,7 @@ export const DimensionInput: React.FC<DimensionInputProps> = ({
   const area = width && length ? parseFloat(width) * parseFloat(length) : 0
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
-      <h2 className="text-xl font-semibold text-gray-800 mb-6">ขนาดพื้นที่</h2>
-
+    <div className="space-y-6">
       <div className="grid md:grid-cols-3 gap-6">
         {/* Width */}
         <Input
@@ -49,21 +47,11 @@ export const DimensionInput: React.FC<DimensionInputProps> = ({
           <label className="block text-sm font-medium text-gray-700 mb-1">
             พื้นที่รวม (ตร.ม.)
           </label>
-          <div className="h-10 flex items-center px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800 font-semibold">
-            {area > 0 ? formatArea(area) : '0.00'}
-          </div>
+            <div className="h-10 flex items-center px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800 font-semibold">
+              {area > 0 ? formatArea(area) : '0.00'}
+            </div>
         </div>
       </div>
-
-      {/* Highlight box */}
-      {area > 0 && (
-        <div className="mt-6 rounded-xl bg-gray-50 border border-gray-200 p-5 text-center">
-          <p className="text-sm text-gray-500 font-medium">พื้นที่ที่คำนวณได้</p>
-          <p className="text-2xl font-bold text-gray-800 mt-1">
-            {formatArea(area)} ตารางเมตร
-          </p>
-        </div>
-      )}
     </div>
   )
 }

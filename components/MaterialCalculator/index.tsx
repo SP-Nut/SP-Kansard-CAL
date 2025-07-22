@@ -139,19 +139,83 @@ export const MaterialCalculator: React.FC = () => {
   const canCalculate = selectedMaterial && width && length && parseFloat(width) > 0 && parseFloat(length) > 0
 
   return (
-    <div className="min-h-screen bg-[#f4f6f8] flex flex-col p-0 sm:p-4">
-      <div className="flex-1 w-full flex flex-row gap-4" style={{width: '100%'}}>
-        <div className="bg-white border border-gray-300 rounded-md p-4 sm:p-6 flex flex-col justify-between min-h-[calc(100vh-48px)] shadow-sm" style={{width: '70%'}}>
-          <div>
-            <h1 className="text-2xl font-bold text-blue-900 mb-5 tracking-tight">
-              สร้างใบเสนอราคา
-            </h1>
+    <div className="space-y-4">
+      {/* Compact Progress Indicator */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium transition-all duration-200 ${
+                selectedMaterial && width && length ? 'bg-green-500 text-white' : 'bg-blue-500 text-white'
+              }`}>
+                1
+              </div>
+              <div className="text-xs">
+                <div className="font-medium text-gray-900">ข้อมูลโครงการ</div>
+                <div className="text-gray-500 text-[10px]">
+                  {selectedMaterial && width && length ? 'ครบถ้วน' : 'กรอกข้อมูล'}
+                </div>
+              </div>
+            </div>
+            
+            <div className={`w-8 h-0.5 ${canCalculate ? 'bg-green-300' : 'bg-gray-200'}`}></div>
+            
+            <div className="flex items-center space-x-2">
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-medium transition-all duration-200 ${
+                result ? 'bg-green-500 text-white' : 
+                canCalculate ? 'bg-orange-500 text-white' : 'bg-gray-300 text-gray-500'
+              }`}>
+                2
+              </div>
+              <div className="text-xs">
+                <div className="font-medium text-gray-900">คำนวณราคา</div>
+                <div className="text-gray-500 text-[10px]">
+                  {result ? 'เสร็จสิ้น' : canCalculate ? 'พร้อมคำนวณ' : 'รอข้อมูล'}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="text-right">
+            <div className="text-xs font-medium text-gray-900">
+              {!selectedMaterial ? 'เริ่มต้นเลือกวัสดุ' : 
+               !width || !length ? 'กรอกขนาดให้ครบ' : 
+               !result ? 'กดปุ่มคำนวณราคา' : 'เสร็จสิ้นการคำนวณ'}
+            </div>
+            <div className="text-[10px] text-gray-500 mt-0.5">
+              ขั้นตอนที่ {!selectedMaterial || !width || !length ? '1' : '2'} จาก 2
+            </div>
+          </div>
+        </div>
+      </div>
 
-            {/* 1. เลือกวัสดุ */}
-            <section className="mb-4">
-              <h2 className="text-base font-semibold text-gray-800 mb-2 border-l-4 border-blue-700 pl-2">
-                1. เลือกวัสดุและโครงสร้าง
-              </h2>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        {/* Left Column - Main Card */}
+        <div className="lg:col-span-3 space-y-4">
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 space-y-6">
+            {/* Dimensions Input - ขึ้นมาบนสุด */}
+            <div>
+              <h3 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></span>
+                ระบุขนาด (เมตร)
+              </h3>
+              <DimensionInput
+                width={width}
+                length={length}
+                onWidthChange={setWidth}
+                onLengthChange={setLength}
+              />
+            </div>
+            
+            {/* Divider */}
+            <div className="border-t border-gray-100"></div>
+            
+            {/* Material Selection */}
+            <div>
+              <h3 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                เลือกวัสดุและโครงสร้าง
+              </h3>
               <MaterialSelector
                 materialType={materialType}
                 onMaterialTypeChange={setMaterialType}
@@ -160,107 +224,266 @@ export const MaterialCalculator: React.FC = () => {
                 selectedSize={selectedSize}
                 onSizeChange={setSelectedSize}
               />
-            </section>
+            </div>
 
-            {/* 2. ขนาด */}
-            <section className="mb-4">
-              <h2 className="text-base font-semibold text-gray-800 mb-2 border-l-4 border-blue-700 pl-2">
-                2. ระบุขนาด (เมตร)
-              </h2>
-              <DimensionInput
-                width={width}
-                length={length}
-                onWidthChange={setWidth}
-                onLengthChange={setLength}
-              />
-            </section>
+            {/* Additional Options after Material Selection - แบ่งซ้ายขวา */}
+            {selectedMaterial && (
+              <>
+                {/* Divider */}
+                <div className="border-t border-gray-100"></div>
+                
+                <div>
+                  <h3 className="text-sm font-medium text-gray-800 mb-4 flex items-center">
+                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-2"></span>
+                    ตัวเลือกหลังเลือกวัสดุ
+                    <span className="text-[10px] text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded-full ml-2">
+                      แนะนำ
+                    </span>
+                  </h3>
+                  
+                  {/* Grid Layout สำหรับแบ่งซ้ายขวา */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* คอลัมน์ที่ 1 - เลือกสี */}
+                    <div className="bg-indigo-50 rounded-lg border border-indigo-200 p-4 space-y-3">
+                      <div className="flex items-center space-x-3">
+                        <label className="flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={useColor}
+                            onChange={(e) => setUseColor(e.target.checked)}
+                            className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                          />
+                          <span className="ml-2 text-sm font-medium text-gray-700">เลือกสีพิเศษ</span>
+                        </label>
+                      </div>
+                      
+                      {useColor && (
+                        <div>
+                          <select
+                            value={selectedColorId || ''}
+                            onChange={(e) => setSelectedColorId(e.target.value || null)}
+                            className="w-full p-2 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          >
+                            <option value="">-- เลือกสี --</option>
+                            {colorOptions.map((color) => (
+                              <option key={color.id} value={color.id}>
+                                {color.name} - {color.price ? `+${color.price} บาท` : 'ไม่มีค่าใช้จ่ายเพิ่ม'}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+                    </div>
 
-            {/* 3. ตัวเลือกเพิ่มเติม */}
-            <section className="mb-4">
-              <h2 className="text-base font-semibold text-gray-800 mb-2 border-l-4 border-blue-700 pl-2">
-                3. ตัวเลือกเพิ่มเติม
-              </h2>
-              <AdditionalOptions
-                useCeiling={useCeiling}
-                useLouver={useLouver}
-                useGutter={useGutter}
-                selectedCeilingId={selectedCeilingId}
-                selectedLouverId={selectedLouverId}
-                selectedGutterId={selectedGutterId}
-                onUseCeilingChange={setUseCeiling}
-                onUseLouverChange={setUseLouver}
-                onUseGutterChange={setUseGutter}
-                onCeilingChange={setSelectedCeilingId}
-                onLouverChange={setSelectedLouverId}
-                onGutterChange={setSelectedGutterId}
-                useElectricity={useElectricity}
-                selectedElectricityId={selectedElectricityId}
-                onUseElectricityChange={setUseElectricity}
-                onElectricityChange={setSelectedElectricityId}
-                useRailingExtra={useRailingExtra}
-                selectedRailingExtraId={selectedRailingExtraId}
-                onUseRailingExtraChange={setUseRailingExtra}
-                onRailingExtraChange={setSelectedRailingExtraId}
-                useVentilator={useVentilator}
-                selectedVentilatorId={selectedVentilatorId}
-                onUseVentilatorChange={setUseVentilator}
-                onVentilatorChange={setSelectedVentilatorId}
-                usePost={usePost}
-                selectedPostId={selectedPostId}
-                onUsePostChange={setUsePost}
-                onPostChange={setSelectedPostId}
-                useFoundation={useFoundation}
-                selectedFoundationId={selectedFoundationId}
-                onUseFoundationChange={setUseFoundation}
-                onFoundationChange={setSelectedFoundationId}
-                useColor={useColor}
-                selectedColorId={selectedColorId}
-                onUseColorChange={setUseColor}
-                onColorChange={setSelectedColorId}
-              />
-            </section>
+                    {/* คอลัมน์ที่ 2 - เพิ่มเสา */}
+                    <div className="bg-green-50 rounded-lg border border-green-200 p-4 space-y-3">
+                      <div className="flex items-center space-x-3">
+                        <label className="flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={usePost}
+                            onChange={(e) => setUsePost(e.target.checked)}
+                            className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                          />
+                          <span className="ml-2 text-sm font-medium text-gray-700">เพิ่มเสา</span>
+                        </label>
+                      </div>
+                      
+                      {usePost && (
+                        <div>
+                          <select
+                            value={selectedPostId || ''}
+                            onChange={(e) => setSelectedPostId(e.target.value || null)}
+                            className="w-full p-2 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                          >
+                            <option value="">-- เลือกประเภทเสา --</option>
+                            {posts.map((group) => (
+                              <optgroup key={group.category} label={group.category}>
+                                {group.options.map((post) => (
+                                  <option key={post.id} value={post.id}>
+                                    {post.name} - {post.price ? `+${post.price} บาท` : 'ไม่มีค่าใช้จ่ายเพิ่ม'}
+                                  </option>
+                                ))}
+                              </optgroup>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* คอลัมน์ที่ 3 - เพิ่มฝ้าสำหรับ L+ */}
+                    {selectedSize === 'L+' && (
+                      <div className="bg-amber-50 rounded-lg border border-amber-200 p-4 space-y-3">
+                        <div className="flex items-center space-x-3">
+                          <label className="flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={useCeiling}
+                              onChange={(e) => setUseCeiling(e.target.checked)}
+                              className="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500"
+                            />
+                            <span className="ml-2 text-sm font-medium text-gray-700">เพิ่มงานฝ้า</span>
+                            <span className="text-[10px] text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded-full ml-2">
+                              L+ เท่านั้น
+                            </span>
+                          </label>
+                        </div>
+                        
+                        {useCeiling && (
+                          <div>
+                            <select
+                              value={selectedCeilingId || ''}
+                              onChange={(e) => setSelectedCeilingId(e.target.value ? Number(e.target.value) : null)}
+                              className="w-full p-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                            >
+                              <option value="">-- เลือกประเภทฝ้า --</option>
+                              {ceilings.map((ceiling) => (
+                                <option key={ceiling.id} value={ceiling.id}>
+                                  {ceiling.name} - {ceiling.price ? `+${ceiling.price} บาท` : 'ไม่มีค่าใช้จ่ายเพิ่ม'}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Divider */}
+            <div className="border-t border-gray-100"></div>
           </div>
 
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={handleCalculate}
-            disabled={!canCalculate}
-            className="w-full mt-4 text-base font-semibold tracking-wide rounded-md bg-blue-700 hover:bg-blue-800 border-blue-700"
-          >
-            คำนวณราคา
-          </Button>
+          {/* Additional Options - การ์ดแยก */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+            <h3 className="text-sm font-medium text-gray-800 mb-3 flex items-center">
+              <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-2"></span>
+              ตัวเลือกเพิ่มเติม
+              <span className="text-[10px] text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded-full ml-2">
+                ไม่บังคับ
+              </span>
+            </h3>
+            <AdditionalOptions
+              useCeiling={selectedSize === 'L+' ? false : useCeiling}
+              useLouver={useLouver}
+              useGutter={useGutter}
+              selectedCeilingId={selectedSize === 'L+' ? null : selectedCeilingId}
+              selectedLouverId={selectedLouverId}
+              selectedGutterId={selectedGutterId}
+              onUseCeilingChange={selectedSize === 'L+' ? () => {} : setUseCeiling}
+              onUseLouverChange={setUseLouver}
+              onUseGutterChange={setUseGutter}
+              onCeilingChange={selectedSize === 'L+' ? () => {} : setSelectedCeilingId}
+              onLouverChange={setSelectedLouverId}
+              onGutterChange={setSelectedGutterId}
+              useElectricity={useElectricity}
+              selectedElectricityId={selectedElectricityId}
+              onUseElectricityChange={setUseElectricity}
+              onElectricityChange={setSelectedElectricityId}
+              useRailingExtra={useRailingExtra}
+              selectedRailingExtraId={selectedRailingExtraId}
+              onUseRailingExtraChange={setUseRailingExtra}
+              onRailingExtraChange={setSelectedRailingExtraId}
+              useVentilator={useVentilator}
+              selectedVentilatorId={selectedVentilatorId}
+              onUseVentilatorChange={setUseVentilator}
+              onVentilatorChange={setSelectedVentilatorId}
+              usePost={false}
+              selectedPostId={null}
+              onUsePostChange={() => {}}
+              onPostChange={() => {}}
+              useFoundation={useFoundation}
+              selectedFoundationId={selectedFoundationId}
+              onUseFoundationChange={setUseFoundation}
+              onFoundationChange={setSelectedFoundationId}
+              useColor={false}
+              selectedColorId={null}
+              onUseColorChange={() => {}}
+              onColorChange={() => {}}
+            />
+          </div>
+
+          {/* Calculate Button Section - ย้ายมาล่างสุด */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-center w-6 h-6 bg-orange-600 text-white rounded-full text-xs font-medium">
+                  3
+                </div>
+                <h3 className="text-sm font-medium text-gray-800">
+                  🧮 คำนวณราคา
+                </h3>
+              </div>
+              {canCalculate && (
+                <span className="text-[10px] text-green-600 bg-green-50 px-2 py-1 rounded-full flex items-center">
+                  ✓ พร้อมคำนวณ
+                </span>
+              )}
+            </div>
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={handleCalculate}
+              disabled={!canCalculate}
+              className={`w-full transition-all duration-200 ${
+                canCalculate 
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transform hover:-translate-y-1' 
+                  : ''
+              }`}
+            >
+              {result ? '🔄 คำนวณใหม่' : '🧮 คำนวณราคา'}
+            </Button>
+          </div>
         </div>
 
-        <div className="bg-white border border-gray-300 rounded-md p-4 sm:p-6 flex flex-col min-h-[calc(100vh-48px)] shadow-sm" style={{width: '30%'}}>
-          <h2 className="text-xl font-bold text-blue-900 border-b border-gray-200 pb-3 mb-4">
-            สรุปรายการ
-          </h2>
-
-          {selectedMaterial && (
-            <PriceDisplay
-              material={selectedMaterial}
-              selectedSize={selectedSize}
-            />
-          )}
-
-          {result ? (
-            <>
-              <ResultDisplay result={result} />
-              <div className="border-t border-gray-200 pt-4 mt-4 text-right">
-                <span className="text-base text-gray-700">ราคารวมทั้งหมด</span>
-                <div className="font-bold text-2xl text-blue-800">
-                  {formatPrice(result.totalCost)} ฿
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="text-center py-10 px-4">
-              <p className="text-gray-500">
-                กรอกข้อมูลด้านซ้ายและกด 'คำนวณราคา' เพื่อดูสรุปใบเสนอราคา
-              </p>
+        {/* Right Column - Compact Summary */}
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 sticky top-4 overflow-hidden">
+            <div className="bg-gradient-to-r from-orange-50 to-amber-50 px-4 py-3 border-b border-gray-200">
+              <h3 className="text-md font-semibold text-gray-900 flex items-center">
+                📋 สรุปรายการ
+              </h3>
             </div>
-          )}
+            
+            <div className="p-4">
+              {selectedMaterial && (
+                <div className="mb-3">
+                  <PriceDisplay
+                    material={selectedMaterial}
+                    selectedSize={selectedSize}
+                    width={width}
+                    length={length}
+                  />
+                </div>
+              )}
+
+              {result ? (
+                <>
+                  <ResultDisplay result={result} />
+                  <div className="border-t border-gray-200 pt-3 mt-3">
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-3 text-center">
+                      <span className="text-xs text-gray-600 block mb-1">ราคารวมทั้งหมด</span>
+                      <div className="font-bold text-2xl text-blue-600 mb-1">
+                        {formatPrice(result.totalCost)} ฿
+                      </div>
+                      <span className="text-[10px] text-gray-500">รวม VAT แล้ว</span>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center py-8">
+                  <div className="text-4xl mb-3">📊</div>
+                  <p className="text-gray-500 text-xs leading-relaxed">
+                    กรอกข้อมูลด้านซ้าย<br />
+                    และกด 'คำนวณราคา'<br />
+                    เพื่อดูสรุปใบเสนอราคา
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

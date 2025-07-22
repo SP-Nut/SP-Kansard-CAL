@@ -35,11 +35,9 @@ export const MaterialSelector: React.FC<MaterialSelectorProps> = ({
   }))
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
-      <h2 className="text-xl font-semibold text-gray-800 mb-6">เลือกวัสดุ</h2>
-
+    <div className="space-y-6">
       {/* Material Type Toggle */}
-      <div className="mb-6">
+      <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">ประเภทวัสดุ</label>
         <div className="inline-flex items-center bg-gray-100 p-1 rounded-xl shadow-inner border border-indigo-200">
           <button

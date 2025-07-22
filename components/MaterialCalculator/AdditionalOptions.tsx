@@ -133,12 +133,8 @@ export const AdditionalOptions: React.FC<AdditionalOptionsProps> = ({
   }))
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 w-full">
-      <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
-        <span className="inline-block w-2 h-5 bg-blue-500 rounded mr-2" />
-        ตัวเลือกเพิ่มเติม
-      </h2>
-      <div className="grid grid-cols-1 gap-3">
+    <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* ตัวเลือกแต่ละกลุ่ม */}
         {[{
           label: 'เพิ่มงานฝ้า',
@@ -151,116 +147,116 @@ export const AdditionalOptions: React.FC<AdditionalOptionsProps> = ({
               value={selectedCeilingId || ''}
               onChange={(e) => onCeilingChange(e.target.value ? Number(e.target.value) : null)}
             />
-          )
-        }, {
-          label: 'เพิ่มงานระแนง',
-          checked: useLouver,
-          onChange: onUseLouverChange,
-          select: useLouver && (
-            <Select
-              options={louverOptions}
-              placeholder="-- เลือกประเภทระแนง --"
-              value={selectedLouverId || ''}
-              onChange={(e) => onLouverChange(e.target.value ? Number(e.target.value) : null)}
-            />
-          )
-        }, {
-          label: 'เพิ่มงานรางน้ำ',
-          checked: useGutter,
-          onChange: onUseGutterChange,
-          select: useGutter && (
-            <Select
-              options={gutterOptions}
-              placeholder="-- เลือกรางน้ำ --"
-              value={selectedGutterId || ''}
-              onChange={(e) => onGutterChange(e.target.value ? Number(e.target.value) : null)}
-            />
-          )
-        }, {
-          label: 'เพิ่มงานไฟฟ้า',
-          checked: useElectricity,
-          onChange: onUseElectricityChange,
-          select: useElectricity && (
-            <Select
-              options={electricitySelectOptions}
-              placeholder="-- เลือกงานไฟฟ้า --"
-              value={selectedElectricityId || ''}
-              onChange={(e) => onElectricityChange(e.target.value ? e.target.value : null)}
-            />
-          )
-        }, {
-          label: 'เพิ่มงานราวกันตก',
-          checked: useRailingExtra,
-          onChange: onUseRailingExtraChange,
-          select: useRailingExtra && (
-            <Select
-              options={railingExtraSelectOptions}
-              placeholder="-- เลือกงานราวกันตก --"
-              value={selectedRailingExtraId || ''}
-              onChange={(e) => onRailingExtraChange(e.target.value ? e.target.value : null)}
-            />
-          )
-        }, {
-          label: 'เพิ่มงานระบายอากาศ',
-          checked: useVentilator,
-          onChange: onUseVentilatorChange,
-          select: useVentilator && (
-            <Select
-              options={ventilatorSelectOptions}
-              placeholder="-- เลือกงานระบายอากาศ --"
-              value={selectedVentilatorId || ''}
-              onChange={(e) => onVentilatorChange(e.target.value ? e.target.value : null)}
-            />
-          )
-        }, {
-          label: 'เพิ่มเสา',
-          checked: usePost,
-          onChange: onUsePostChange,
-          select: usePost && (
-            <Select
-              options={postSelectOptions}
-              placeholder="-- เลือกเสา --"
-              value={selectedPostId || ''}
-              onChange={(e) => onPostChange(e.target.value ? e.target.value : null)}
-            />
-          )
-        }, {
-          label: 'เพิ่มฐานราก',
-          checked: useFoundation,
-          onChange: onUseFoundationChange,
-          select: useFoundation && (
-            <Select
-              options={foundationSelectOptions}
-              placeholder="-- เลือกฐานราก --"
-              value={selectedFoundationId || ''}
-              onChange={(e) => onFoundationChange(e.target.value ? e.target.value : null)}
-            />
-          )
-        }, {
-          label: 'เพิ่มสี',
-          checked: useColor,
-          onChange: onUseColorChange,
-          select: useColor && (
-            <Select
-              options={colorSelectOptions}
-              placeholder="-- เลือกสี --"
-              value={selectedColorId || ''}
-              onChange={(e) => onColorChange(e.target.value ? e.target.value : null)}
-            />
-          )
-        }].map((item, idx) => (
-          <div key={item.label} className="bg-white rounded border border-gray-200 p-3 flex flex-col gap-2 min-h-[70px]">
-            <label className="flex items-center gap-2 cursor-pointer text-base font-medium text-gray-700">
-              <input
-                type="checkbox"
-                checked={item.checked}
-                onChange={(e) => item.onChange(e.target.checked)}
-                className="w-4 h-4 text-blue-600 rounded border border-gray-400 focus:ring-1 focus:ring-blue-400 focus:border-blue-600 bg-white"
+            )
+          }, {
+            label: 'เพิ่มงานระแนง',
+            checked: useLouver,
+            onChange: onUseLouverChange,
+            select: useLouver && (
+              <Select
+                options={louverOptions}
+                placeholder="-- เลือกประเภทระแนง --"
+                value={selectedLouverId || ''}
+                onChange={(e) => onLouverChange(e.target.value ? Number(e.target.value) : null)}
               />
-              <span>{item.label}</span>
-            </label>
-            {item.select && <div className="ml-6 mt-1">{item.select}</div>}
-          </div>
+            )
+          }, {
+            label: 'เพิ่มงานรางน้ำ',
+            checked: useGutter,
+            onChange: onUseGutterChange,
+            select: useGutter && (
+              <Select
+                options={gutterOptions}
+                placeholder="-- เลือกรางน้ำ --"
+                value={selectedGutterId || ''}
+                onChange={(e) => onGutterChange(e.target.value ? Number(e.target.value) : null)}
+              />
+            )
+          }, {
+            label: 'เพิ่มงานไฟฟ้า',
+            checked: useElectricity,
+            onChange: onUseElectricityChange,
+            select: useElectricity && (
+              <Select
+                options={electricitySelectOptions}
+                placeholder="-- เลือกงานไฟฟ้า --"
+                value={selectedElectricityId || ''}
+                onChange={(e) => onElectricityChange(e.target.value ? e.target.value : null)}
+              />
+            )
+          }, {
+            label: 'เพิ่มงานราวกันตก',
+            checked: useRailingExtra,
+            onChange: onUseRailingExtraChange,
+            select: useRailingExtra && (
+              <Select
+                options={railingExtraSelectOptions}
+                placeholder="-- เลือกงานราวกันตก --"
+                value={selectedRailingExtraId || ''}
+                onChange={(e) => onRailingExtraChange(e.target.value ? e.target.value : null)}
+              />
+            )
+          }, {
+            label: 'เพิ่มงานระบายอากาศ',
+            checked: useVentilator,
+            onChange: onUseVentilatorChange,
+            select: useVentilator && (
+              <Select
+                options={ventilatorSelectOptions}
+                placeholder="-- เลือกงานระบายอากาศ --"
+                value={selectedVentilatorId || ''}
+                onChange={(e) => onVentilatorChange(e.target.value ? e.target.value : null)}
+              />
+            )
+          }, {
+            label: 'เพิ่มเสา',
+            checked: usePost,
+            onChange: onUsePostChange,
+            select: usePost && (
+              <Select
+                options={postSelectOptions}
+                placeholder="-- เลือกเสา --"
+                value={selectedPostId || ''}
+                onChange={(e) => onPostChange(e.target.value ? e.target.value : null)}
+              />
+            )
+          }, {
+            label: 'เพิ่มฐานราก',
+            checked: useFoundation,
+            onChange: onUseFoundationChange,
+            select: useFoundation && (
+              <Select
+                options={foundationSelectOptions}
+                placeholder="-- เลือกฐานราก --"
+                value={selectedFoundationId || ''}
+                onChange={(e) => onFoundationChange(e.target.value ? e.target.value : null)}
+              />
+            )
+          }, {
+            label: 'เพิ่มสี',
+            checked: useColor,
+            onChange: onUseColorChange,
+            select: useColor && (
+              <Select
+                options={colorSelectOptions}
+                placeholder="-- เลือกสี --"
+                value={selectedColorId || ''}
+                onChange={(e) => onColorChange(e.target.value ? e.target.value : null)}
+              />
+            )
+          }].map((item, idx) => (
+            <div key={item.label} className="bg-gray-50 rounded-lg border border-gray-200 p-4 space-y-3">
+              <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={item.checked}
+                  onChange={(e) => item.onChange(e.target.checked)}
+                  className="w-4 h-4 text-blue-600 rounded border border-gray-400 focus:ring-1 focus:ring-blue-400 focus:border-blue-600 bg-white"
+                />
+                <span>{item.label}</span>
+              </label>
+              {item.select && <div className="mt-2">{item.select}</div>}
+            </div>
         ))}
       </div>
     </div>
