@@ -9,7 +9,6 @@ import ventilatorOptions from '@/data/ventilators'
 import posts from '@/data/posts'
 import foundations from '@/data/foundations'
 import colorOptions from '@/data/colors'
-import { FaCheckSquare, FaRegSquare } from 'react-icons/fa'
 
 interface AdditionalOptionsProps {
   useCeiling: boolean
@@ -51,15 +50,6 @@ interface AdditionalOptionsProps {
 }
 
 export const AdditionalOptions: React.FC<AdditionalOptionsProps> = ({
-  useCeiling,
-  useLouver,
-  useGutter,
-  useElectricity,
-  useRailingExtra,
-  useVentilator,
-  usePost,
-  useFoundation,
-  useColor,
   selectedCeilingId,
   selectedLouverId,
   selectedGutterId,
@@ -133,131 +123,152 @@ export const AdditionalOptions: React.FC<AdditionalOptionsProps> = ({
   }))
 
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* ตัวเลือกแต่ละกลุ่ม */}
-        {[{
-          label: 'เพิ่มงานฝ้า',
-          checked: useCeiling,
-          onChange: onUseCeilingChange,
-          select: useCeiling && (
-            <Select
-              options={ceilingOptions}
-              placeholder="-- เลือกประเภทฝ้า --"
-              value={selectedCeilingId || ''}
-              onChange={(e) => onCeilingChange(e.target.value ? Number(e.target.value) : null)}
-            />
-            )
-          }, {
-            label: 'เพิ่มงานระแนง',
-            checked: useLouver,
-            onChange: onUseLouverChange,
-            select: useLouver && (
-              <Select
-                options={louverOptions}
-                placeholder="-- เลือกประเภทระแนง --"
-                value={selectedLouverId || ''}
-                onChange={(e) => onLouverChange(e.target.value ? Number(e.target.value) : null)}
-              />
-            )
-          }, {
-            label: 'เพิ่มงานรางน้ำ',
-            checked: useGutter,
-            onChange: onUseGutterChange,
-            select: useGutter && (
-              <Select
-                options={gutterOptions}
-                placeholder="-- เลือกรางน้ำ --"
-                value={selectedGutterId || ''}
-                onChange={(e) => onGutterChange(e.target.value ? Number(e.target.value) : null)}
-              />
-            )
-          }, {
-            label: 'เพิ่มงานไฟฟ้า',
-            checked: useElectricity,
-            onChange: onUseElectricityChange,
-            select: useElectricity && (
-              <Select
-                options={electricitySelectOptions}
-                placeholder="-- เลือกงานไฟฟ้า --"
-                value={selectedElectricityId || ''}
-                onChange={(e) => onElectricityChange(e.target.value ? e.target.value : null)}
-              />
-            )
-          }, {
-            label: 'เพิ่มงานราวกันตก',
-            checked: useRailingExtra,
-            onChange: onUseRailingExtraChange,
-            select: useRailingExtra && (
-              <Select
-                options={railingExtraSelectOptions}
-                placeholder="-- เลือกงานราวกันตก --"
-                value={selectedRailingExtraId || ''}
-                onChange={(e) => onRailingExtraChange(e.target.value ? e.target.value : null)}
-              />
-            )
-          }, {
-            label: 'เพิ่มงานระบายอากาศ',
-            checked: useVentilator,
-            onChange: onUseVentilatorChange,
-            select: useVentilator && (
-              <Select
-                options={ventilatorSelectOptions}
-                placeholder="-- เลือกงานระบายอากาศ --"
-                value={selectedVentilatorId || ''}
-                onChange={(e) => onVentilatorChange(e.target.value ? e.target.value : null)}
-              />
-            )
-          }, {
-            label: 'เพิ่มเสา',
-            checked: usePost,
-            onChange: onUsePostChange,
-            select: usePost && (
-              <Select
-                options={postSelectOptions}
-                placeholder="-- เลือกเสา --"
-                value={selectedPostId || ''}
-                onChange={(e) => onPostChange(e.target.value ? e.target.value : null)}
-              />
-            )
-          }, {
-            label: 'เพิ่มฐานราก',
-            checked: useFoundation,
-            onChange: onUseFoundationChange,
-            select: useFoundation && (
-              <Select
-                options={foundationSelectOptions}
-                placeholder="-- เลือกฐานราก --"
-                value={selectedFoundationId || ''}
-                onChange={(e) => onFoundationChange(e.target.value ? e.target.value : null)}
-              />
-            )
-          }, {
-            label: 'เพิ่มสี',
-            checked: useColor,
-            onChange: onUseColorChange,
-            select: useColor && (
-              <Select
-                options={colorSelectOptions}
-                placeholder="-- เลือกสี --"
-                value={selectedColorId || ''}
-                onChange={(e) => onColorChange(e.target.value ? e.target.value : null)}
-              />
-            )
-          }].map((item, idx) => (
-            <div key={item.label} className="bg-gray-50 rounded-lg border border-gray-200 p-4 space-y-3">
-              <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-gray-700">
-                <input
-                  type="checkbox"
-                  checked={item.checked}
-                  onChange={(e) => item.onChange(e.target.checked)}
-                  className="w-4 h-4 text-blue-600 rounded border border-gray-400 focus:ring-1 focus:ring-blue-400 focus:border-blue-600 bg-white"
-                />
-                <span>{item.label}</span>
-              </label>
-              {item.select && <div className="mt-2">{item.select}</div>}
-            </div>
-        ))}
+    <div className="space-y-4">
+      {/* Dropdown Grid Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* งานระแนง */}
+        <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-all duration-200">
+          <div className="flex items-center space-x-2 mb-3">
+            <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+            <span className="text-sm font-semibold text-gray-800">งานระแนง</span>
+          </div>
+          <Select
+            options={[
+              { value: '', label: '-- ไม่ต้องการ --' },
+              ...louverOptions
+            ]}
+            placeholder="เลือกประเภทระแนง"
+            value={selectedLouverId || ''}
+            onChange={(e) => {
+              const value = e.target.value ? Number(e.target.value) : null;
+              onLouverChange(value);
+              onUseLouverChange(!!value);
+            }}
+            fullWidth
+          />
+        </div>
+
+        {/* งานไฟฟ้า */}
+        <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-all duration-200">
+          <div className="flex items-center space-x-2 mb-3">
+            <svg className="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span className="text-sm font-semibold text-gray-800">งานไฟฟ้า</span>
+          </div>
+          <Select
+            options={[
+              { value: '', label: '-- ไม่ต้องการ --' },
+              ...electricitySelectOptions
+            ]}
+            placeholder="เลือกงานไฟฟ้า"
+            value={selectedElectricityId || ''}
+            onChange={(e) => {
+              const value = e.target.value || null;
+              onElectricityChange(value);
+              onUseElectricityChange(!!value);
+            }}
+            fullWidth
+          />
+        </div>
+
+        {/* งานระบายอากาศ */}
+        <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-all duration-200">
+          <div className="flex items-center space-x-2 mb-3">
+            <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+            </svg>
+            <span className="text-sm font-semibold text-gray-800">งานระบายอากาศ</span>
+          </div>
+          <Select
+            options={[
+              { value: '', label: '-- ไม่ต้องการ --' },
+              ...ventilatorSelectOptions
+            ]}
+            placeholder="เลือกงานระบายอากาศ"
+            value={selectedVentilatorId || ''}
+            onChange={(e) => {
+              const value = e.target.value || null;
+              onVentilatorChange(value);
+              onUseVentilatorChange(!!value);
+            }}
+            fullWidth
+          />
+        </div>
+
+        {/* งานรางน้ำ */}
+        <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-all duration-200">
+          <div className="flex items-center space-x-2 mb-3">
+            <svg className="w-4 h-4 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+            </svg>
+            <span className="text-sm font-semibold text-gray-800">งานรางน้ำ</span>
+          </div>
+          <Select
+            options={[
+              { value: '', label: '-- ไม่ต้องการ --' },
+              ...gutterOptions
+            ]}
+            placeholder="เลือกรางน้ำ"
+            value={selectedGutterId || ''}
+            onChange={(e) => {
+              const value = e.target.value ? Number(e.target.value) : null;
+              onGutterChange(value);
+              onUseGutterChange(!!value);
+            }}
+            fullWidth
+          />
+        </div>
+
+        {/* งานราวกันตก */}
+        <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-all duration-200">
+          <div className="flex items-center space-x-2 mb-3">
+            <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            <span className="text-sm font-semibold text-gray-800">งานราวกันตก</span>
+          </div>
+          <Select
+            options={[
+              { value: '', label: '-- ไม่ต้องการ --' },
+              ...railingExtraSelectOptions
+            ]}
+            placeholder="เลือกงานราวกันตก"
+            value={selectedRailingExtraId || ''}
+            onChange={(e) => {
+              const value = e.target.value || null;
+              onRailingExtraChange(value);
+              onUseRailingExtraChange(!!value);
+            }}
+            fullWidth
+          />
+        </div>
+
+        {/* ฐานราก */}
+        <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-all duration-200">
+          <div className="flex items-center space-x-2 mb-3">
+            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+            <span className="text-sm font-semibold text-gray-800">ฐานราก</span>
+          </div>
+          <Select
+            options={[
+              { value: '', label: '-- ไม่ต้องการ --' },
+              ...foundationSelectOptions
+            ]}
+            placeholder="เลือกฐานราก"
+            value={selectedFoundationId || ''}
+            onChange={(e) => {
+              const value = e.target.value || null;
+              onFoundationChange(value);
+              onUseFoundationChange(!!value);
+            }}
+            fullWidth
+          />
+        </div>
       </div>
     </div>
   )
